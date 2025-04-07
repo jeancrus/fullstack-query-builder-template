@@ -53,13 +53,23 @@ app.get(
   async (request: Request, response: Response) => {
     const { id } = request.params;
 
-    const modules = await knex("course_modules")
-      .select(["course_modules.*", "courses.title as course_title"])
-      .where("course_id", id)
-      .innerJoin("courses", "course_modules.course_id", "courses.id")
-      .orderBy("course_modules.title", "asc");
+    // const modules = await knex("course_modules")
+    //   .select(["course_modules.*", "courses.title as course_title"])
+    //   .where("course_id", id)
+    //   .innerJoin("courses", "course_modules.course_id", "courses.id")
+    //   .orderBy("course_modules.title", "asc");
 
-    return response.status(200).json({ message: modules });
+    const modules = await knex("courses")
+      .select(
+        "courses.id",
+        "courses.title as course",
+        "course_modules.id",
+        "course_modules.title as module",
+        "course_modules.slug"
+      )
+      .join("course_modules", "courses.id", "course_modules.course_id");
+
+    return response.status(200).json({ modules });
   }
 );
 
