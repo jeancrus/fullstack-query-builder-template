@@ -63,7 +63,7 @@ app.get(
       .select(
         "courses.id",
         "courses.title as course",
-        "course_modules.id",
+        "course_modules.id as module_id",
         "course_modules.title as module",
         "course_modules.slug"
       )
